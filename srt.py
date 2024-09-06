@@ -1,6 +1,8 @@
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.formatters import TextFormatter
 from youtube_transcript_api.formatters import SRTFormatter
+from pytubefix import YouTube
+from pytubefix.cli import on_progress
 #For Docs https://pypi.org/project/youtube-transcript-api/
 
 
@@ -19,5 +21,11 @@ def GetCaptions(id):
 
         with open('srt.srt', 'w', encoding='utf-8') as srt_file:
             srt_file.write(srt_formatter)
+    else:
+        url = f"https://www.youtube.com/watch?v={id}"
+        
+        yt = YouTube(url, on_progress_callback = on_progress)
+        print(yt.title)
+        yt.streams.get_lowest_resolution().download()
 
 GetCaptions('qw7xG1KGC_U')
